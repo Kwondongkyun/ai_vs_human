@@ -201,7 +201,7 @@ export const roundImages: ImageItem[][] = [
     },
     {
       id: "r4-16",
-      src: "/images/round4/ai-1.jpg",
+      src: "/images/round4/ai-1.png",
       isAI: true,
       category: "동물",
     },
