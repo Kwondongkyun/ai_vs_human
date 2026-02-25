@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { GridImage } from '@/types/game';
 
@@ -7,9 +8,12 @@ interface ImageCardProps {
   image: GridImage;
   onClick: (imageId: string) => void;
   disabled: boolean;
+  gridCols: number;
+  priority?: boolean;
 }
 
-export default function ImageCard({ image, onClick, disabled }: ImageCardProps) {
+export default function ImageCard({ image, onClick, disabled, gridCols, priority = false }: ImageCardProps) {
+  const sizes = `(max-width: 640px) ${Math.floor(100 / gridCols)}vw, ${Math.floor(640 / gridCols)}px`;
   const getBorderClass = () => {
     if (!image.selected && !image.revealed) return 'border-white/10 hover:border-white/30';
     if (image.selected && image.isAI) return 'border-danger ring-2 ring-danger/50';
@@ -54,11 +58,13 @@ export default function ImageCard({ image, onClick, disabled }: ImageCardProps) 
         disabled || image.revealed ? 'cursor-default' : 'cursor-pointer'
       }`}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={image.src}
         alt="game image"
-        className="w-full h-full object-cover"
+        fill
+        sizes={sizes}
+        className="object-cover"
+        priority={priority}
         draggable={false}
       />
       {getOverlay()}

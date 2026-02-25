@@ -35,6 +35,8 @@ export default function ImageGrid({ images, config, onImageClick, disabled }: Im
             image={image}
             onClick={onImageClick}
             disabled={disabled}
+            gridCols={config.gridCols}
+            priority={i < config.gridCols * 2}
           />
         </motion.div>
       ))}
