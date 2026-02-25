@@ -54,7 +54,7 @@ export default function ImageCard({ image, onClick, disabled, gridCols, priority
       transition={{ duration: 0.3 }}
       onClick={() => !disabled && !image.revealed && onClick(image.id)}
       disabled={disabled || image.revealed}
-      className={`relative aspect-square rounded-lg border-2 overflow-hidden transition-all duration-200 ${getBorderClass()} ${
+      className={`relative block w-full aspect-square rounded-lg border-2 overflow-hidden transition-all duration-200 ${getBorderClass()} ${
         disabled || image.revealed ? 'cursor-default' : 'cursor-pointer'
       }`}
     >
