@@ -3,9 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { Trophy, Medal, ChevronRight } from 'lucide-react';
 import { LeaderboardEntry } from '@/types/game';
 
-const MEDALS = ['🥇', '🥈', '🥉'];
+const MEDAL_COLORS = [
+  'text-yellow-400',
+  'text-gray-300',
+  'text-amber-500',
+];
 
 export default function TopRanking() {
   const router = useRouter();
@@ -30,15 +35,18 @@ export default function TopRanking() {
       className="absolute top-4 right-4 z-10 w-52 bg-white/5 border border-white/10 backdrop-blur-sm rounded-xl p-3"
     >
       <div className="flex items-center gap-1.5 mb-3">
-        <span className="text-sm">🏆</span>
+        <Trophy className="w-3.5 h-3.5 text-lg-red" strokeWidth={1.5} />
         <span className="text-sm font-bold text-white">TOP 5</span>
       </div>
 
       <div className="space-y-2">
         {entries.map((entry, i) => (
           <div key={i} className="flex items-center gap-2 text-xs">
-            <span className="w-5 text-center shrink-0 text-sm leading-none">
-              {i < 3 ? MEDALS[i] : <span className="text-white/40 font-medium">{i + 1}</span>}
+            <span className={`w-5 flex justify-center shrink-0 ${i < 3 ? MEDAL_COLORS[i] : 'text-white/30'}`}>
+              {i < 3
+                ? <Medal className="w-3.5 h-3.5" strokeWidth={2} />
+                : <span className="font-medium tabular-nums">{i + 1}</span>
+              }
             </span>
             <span className="flex-1 truncate text-white/80">{entry.nickname}</span>
             <span className="text-lg-red font-bold shrink-0 tabular-nums">
@@ -50,9 +58,10 @@ export default function TopRanking() {
 
       <button
         onClick={() => router.push('/leaderboard')}
-        className="mt-3 w-full text-xs text-white/40 hover:text-white/70 transition-colors text-center"
+        className="mt-3 w-full flex items-center justify-center gap-1 text-xs text-white/40 hover:text-white/70 transition-colors"
       >
-        전체 랭킹 보기 →
+        전체 랭킹 보기
+        <ChevronRight className="w-3 h-3" strokeWidth={2} />
       </button>
     </motion.div>
   );

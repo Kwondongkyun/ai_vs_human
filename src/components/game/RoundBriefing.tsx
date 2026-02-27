@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { Shield, Target, Flame, Zap, Play, LayoutGrid, Timer, XCircle, CheckCircle } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { RoundConfig } from '@/types/game';
 
@@ -9,10 +10,10 @@ interface RoundBriefingProps {
   onStart: () => void;
 }
 
-const ROUND_EMOJIS = ['🔰', '🎯', '🔥', '💀'];
+const ROUND_ICONS = [Shield, Target, Flame, Zap];
 
 export default function RoundBriefing({ config, onStart }: RoundBriefingProps) {
-  const emoji = ROUND_EMOJIS[config.round - 1] ?? '🎯';
+  const RoundIcon = ROUND_ICONS[config.round - 1] ?? Target;
 
   return (
     <motion.div
@@ -22,28 +23,53 @@ export default function RoundBriefing({ config, onStart }: RoundBriefingProps) {
       className="fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4"
     >
       <motion.div
-        initial={{ scale: 0.8, y: 20 }}
+        initial={{ scale: 0.85, y: 20 }}
         animate={{ scale: 1, y: 0 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
         className="bg-yonam-dark border border-white/10 rounded-2xl p-6 max-w-sm w-full text-center"
       >
-        <div className="text-5xl mb-4">{emoji}</div>
-        <h2 className="text-2xl font-bold mb-2">Round {config.round}</h2>
-
-        <div className="bg-white/5 border border-white/10 rounded-lg p-3 mb-4">
-          <p className="text-lg font-medium text-lg-red">{config.missionText}</p>
+        <div className="flex justify-center mb-4">
+          <div className="relative">
+            <div className="absolute inset-0 blur-2xl bg-lg-red/20 rounded-full scale-[2]" />
+            <div className="relative bg-white/5 border border-white/10 rounded-2xl p-4">
+              <RoundIcon className="w-10 h-10 text-lg-red" strokeWidth={1.5} />
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-2 text-sm text-white/60 mb-6">
-          <p>
-            그리드: <strong className="text-white">{config.gridCols}x{config.gridRows}</strong>
-            {' '}({config.totalImages}장)
-          </p>
-          <p>제한 시간: <strong className="text-warning">{config.timeLimit}초</strong></p>
-          <p>오답 감점: <strong className="text-danger">-{config.wrongPenalty}점</strong></p>
-          <p>정답 점수: <strong className="text-success">+{config.correctScore}점</strong> + 시간 보너스</p>
+        <div className="inline-flex items-center gap-1.5 bg-lg-red/15 border border-lg-red/30 rounded-full px-3 py-1 text-xs text-lg-red font-bold mb-2">
+          ROUND {config.round}
         </div>
 
-        <Button size="lg" className="w-full" onClick={onStart}>
+        <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 mb-5">
+          <p className="text-base font-semibold text-white">{config.missionText}</p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 text-sm mb-6">
+          <div className="bg-white/3 border border-white/8 rounded-xl p-3 flex flex-col items-center gap-1.5">
+            <LayoutGrid className="w-4 h-4 text-white/40" strokeWidth={1.5} />
+            <span className="text-white/40 text-xs">그리드</span>
+            <span className="font-bold text-white">{config.gridCols}×{config.gridRows}</span>
+          </div>
+          <div className="bg-white/3 border border-white/8 rounded-xl p-3 flex flex-col items-center gap-1.5">
+            <Timer className="w-4 h-4 text-warning" strokeWidth={1.5} />
+            <span className="text-white/40 text-xs">제한시간</span>
+            <span className="font-bold text-warning">{config.timeLimit}s</span>
+          </div>
+          <div className="bg-white/3 border border-white/8 rounded-xl p-3 flex flex-col items-center gap-1.5">
+            <CheckCircle className="w-4 h-4 text-success" strokeWidth={1.5} />
+            <span className="text-white/40 text-xs">정답</span>
+            <span className="font-bold text-success">+{config.correctScore}</span>
+          </div>
+          <div className="bg-white/3 border border-white/8 rounded-xl p-3 flex flex-col items-center gap-1.5">
+            <XCircle className="w-4 h-4 text-danger" strokeWidth={1.5} />
+            <span className="text-white/40 text-xs">오답 감점</span>
+            <span className="font-bold text-danger">-{config.wrongPenalty}</span>
+          </div>
+        </div>
+
+        <Button size="lg" className="w-full flex items-center justify-center gap-2" onClick={onStart}>
+          <Play className="w-4 h-4 fill-current" />
           시작!
         </Button>
       </motion.div>

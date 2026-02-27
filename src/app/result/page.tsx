@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { Trophy, CheckCircle2, XCircle, Home, Upload } from 'lucide-react';
 import { useGameStore } from '@/stores/gameStore';
 import { ROUNDS_COUNT } from '@/lib/constants';
 import Button from '@/components/ui/Button';
@@ -42,42 +43,106 @@ export default function ResultPage() {
   if (!nickname) return null;
 
   return (
-    <div className="min-h-screen bg-yonam-dark px-4 py-8 flex items-center justify-center">
+    <div className="min-h-screen px-4 py-8 flex items-center justify-center relative overflow-hidden">
+      <div className="absolute inset-0 bg-linear-to-b from-yonam-dark via-yonam-blue/10 to-lg-red/20" />
+
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-md w-full text-center"
+        transition={{ duration: 0.6 }}
+        className="relative z-10 max-w-md w-full text-center"
       >
-        <div className="text-6xl mb-4">🎯</div>
-        <h1 className="text-3xl font-bold mb-2">게임 완료!</h1>
-        <p className="text-white/60 mb-6">{nickname}님의 최종 결과</p>
-
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-          <div className="text-5xl font-bold text-lg-red mb-4">
-            {totalScore.toLocaleString()}
+        {/* 아이콘 */}
+        <motion.div
+          initial={{ scale: 0, rotate: -10 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ delay: 0.1, type: 'spring', stiffness: 180 }}
+          className="flex justify-center mb-6"
+        >
+          <div className="relative">
+            <div className="absolute inset-0 blur-3xl bg-lg-red/30 rounded-full scale-[2]" />
+            <div className="relative bg-white/5 border border-white/10 rounded-2xl p-5">
+              <Trophy className="w-12 h-12 text-lg-red" strokeWidth={1.5} />
+            </div>
           </div>
-          <div className="text-sm text-white/40 mb-4">총점</div>
+        </motion.div>
 
-          <div className="space-y-2">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <h1 className="text-3xl font-extrabold mb-1">게임 완료!</h1>
+          <p className="text-white/50 text-sm mb-8">{nickname}님의 최종 결과</p>
+        </motion.div>
+
+        {/* 총점 카드 */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4"
+        >
+          <p className="text-xs text-white/40 mb-2 uppercase tracking-widest">총점</p>
+          <motion.div
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.4, type: 'spring', stiffness: 150 }}
+            className="text-5xl font-extrabold text-lg-red tabular-nums mb-5"
+          >
+            {totalScore.toLocaleString()}
+          </motion.div>
+
+          <div className="space-y-2.5">
             {roundScores.map((s, i) => (
-              <div key={i} className="flex justify-between text-sm">
-                <span className="text-white/60">Round {i + 1}</span>
-                <span className={`font-bold ${s > 0 ? 'text-success' : 'text-danger'}`}>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.45 + i * 0.07 }}
+                className="flex items-center justify-between text-sm"
+              >
+                <span className="flex items-center gap-2 text-white/50">
+                  {s > 0
+                    ? <CheckCircle2 className="w-3.5 h-3.5 text-success" strokeWidth={2} />
+                    : <XCircle className="w-3.5 h-3.5 text-danger" strokeWidth={2} />
+                  }
+                  Round {i + 1}
+                </span>
+                <span className={`font-bold tabular-nums ${s > 0 ? 'text-success' : 'text-white/30'}`}>
                   {s > 0 ? `+${s.toLocaleString()}` : '0'}점
                 </span>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        <div className="flex flex-col gap-3">
-          <Button size="lg" className="w-full" onClick={handleSubmit} disabled={submitted}>
+        {/* 버튼 */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="flex flex-col gap-3"
+        >
+          <Button
+            size="lg"
+            className="w-full flex items-center justify-center gap-2"
+            onClick={handleSubmit}
+            disabled={submitted}
+          >
+            <Upload className="w-4 h-4" strokeWidth={2} />
             {submitted ? '등록 완료!' : '리더보드에 등록'}
           </Button>
-          <Button variant="ghost" size="md" className="w-full" onClick={() => router.push('/')}>
+          <Button
+            variant="ghost"
+            size="md"
+            className="w-full flex items-center justify-center gap-2"
+            onClick={() => router.push('/')}
+          >
+            <Home className="w-4 h-4" strokeWidth={1.5} />
             홈으로
           </Button>
-        </div>
+        </motion.div>
       </motion.div>
     </div>
   );
