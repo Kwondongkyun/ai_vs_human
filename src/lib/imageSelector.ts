@@ -1,5 +1,6 @@
-import { GridImage } from '@/types/game';
-import { roundImages } from '@/data/images';
+import { GridImage, ImageItem } from '@/types/game';
+import { roundImagePools } from '@/data/images';
+import { ROUND_CONFIGS, ROUNDS_COUNT } from './constants';
 
 function shuffle<T>(array: T[]): T[] {
   const arr = [...array];
@@ -10,13 +11,33 @@ function shuffle<T>(array: T[]): T[] {
   return arr;
 }
 
-export function getShuffledImagesForRound(roundIndex: number): GridImage[] {
-  const images = roundImages[roundIndex];
-  if (!images) return [];
+function sample<T>(array: T[], count: number): T[] {
+  if (array.length <= count) return shuffle(array);
+  return shuffle(array).slice(0, count);
+}
 
-  const shuffled = shuffle(images);
+/** 게임 시작 시 호출 — 전체 AI 이미지 풀을 셔플해 라운드별 1장씩 배정 */
+export function createAIAssignment(): ImageItem[] {
+  const allAI = Array.from(
+    new Map(
+      roundImagePools.flatMap(pool => pool.ai).map(ai => [ai.id, ai])
+    ).values()
+  );
+  return shuffle(allAI).slice(0, ROUNDS_COUNT);
+}
 
-  return shuffled.map((img, index) => ({
+export function getShuffledImagesForRound(
+  roundIndex: number,
+  assignedAI: ImageItem
+): GridImage[] {
+  const config = ROUND_CONFIGS[roundIndex];
+  const pool = roundImagePools[roundIndex];
+  if (!pool || !config) return [];
+
+  const realImages: ImageItem[] = sample(pool.real, config.realCount);
+  const combined = shuffle([...realImages, assignedAI]);
+
+  return combined.map((img, index) => ({
     ...img,
     index,
     selected: false,

@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { useGameStore } from '@/stores/gameStore';
 import Button from '@/components/ui/Button';
 import Modal from '@/components/ui/Modal';
+import TopRanking from '@/components/game/TopRanking';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -22,7 +23,8 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-yonam-dark via-yonam-dark to-lg-red/20" />
+      <div className="absolute inset-0 bg-gradient-to-b from-yonam-dark via-yonam-blue/20 to-lg-red/30" />
+      <TopRanking />
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -47,12 +49,6 @@ export default function LandingPage() {
         <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-8 text-sm text-white/70 leading-relaxed">
           <p>실제 사진과 <strong className="text-white">AI가 생성한 이미지</strong>가 섞여있습니다.</p>
           <p>라운드마다 그리드가 커지고, 난이도가 올라갑니다!</p>
-          <div className="mt-3 space-y-1 text-xs text-white/50">
-            <p>R1: 2장 중 실제 이미지 고르기</p>
-            <p>R2: 2x2 중 AI 이미지 찾기</p>
-            <p>R3: 3x3 중 AI 이미지 찾기</p>
-            <p>R4: 4x4 중 AI 이미지 찾기</p>
-          </div>
         </div>
 
         <div className="grid grid-cols-3 gap-3 mb-8 text-center text-sm">
@@ -73,9 +69,6 @@ export default function LandingPage() {
         <div className="flex flex-col gap-3">
           <Button size="lg" className="w-full" onClick={() => setShowModal(true)}>
             게임 시작
-          </Button>
-          <Button variant="ghost" size="md" className="w-full" onClick={() => router.push('/leaderboard')}>
-            리더보드
           </Button>
         </div>
       </motion.div>

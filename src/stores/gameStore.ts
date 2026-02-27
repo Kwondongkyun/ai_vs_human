@@ -1,8 +1,11 @@
-import { create } from 'zustand';
-import { GameState, GamePhase, GridImage } from '@/types/game';
-import { ROUND_CONFIGS } from '@/lib/constants';
-import { getShuffledImagesForRound } from '@/lib/imageSelector';
-import { calculateRoundScore } from '@/lib/scoring';
+import { create } from "zustand";
+import { GameState, GamePhase } from "@/types/game";
+import { ROUND_CONFIGS } from "@/lib/constants";
+import {
+  getShuffledImagesForRound,
+  createAIAssignment,
+} from "@/lib/imageSelector";
+import { calculateRoundScore } from "@/lib/scoring";
 
 interface GameStore extends GameState {
   setNickname: (nickname: string) => void;
@@ -16,17 +19,18 @@ interface GameStore extends GameState {
 }
 
 const initialState: GameState = {
-  nickname: '',
+  nickname: "",
   currentRound: 0,
   score: 0,
   totalScore: 0,
   roundScores: [],
-  phase: 'landing',
+  phase: "landing",
   gridImages: [],
   selectedImageId: null,
   isCorrect: null,
   timeRemaining: 0,
   wrongClicks: 0,
+  aiAssignment: [],
 };
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -37,7 +41,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   startRound: (round) => {
     const config = ROUND_CONFIGS[round];
-    const gridImages = getShuffledImagesForRound(round);
+    const { aiAssignment } = get();
+    const assignedAI = aiAssignment[round] ?? aiAssignment[0];
+    const gridImages = getShuffledImagesForRound(round, assignedAI);
 
     set({
       currentRound: round,
@@ -47,24 +53,29 @@ export const useGameStore = create<GameStore>((set, get) => ({
       isCorrect: null,
       timeRemaining: config.timeLimit,
       wrongClicks: 0,
-      phase: 'briefing',
+      phase: "briefing",
     });
   },
 
   selectImage: (imageId) => {
     const { gridImages, phase, currentRound } = get();
-    if (phase !== 'playing') return;
+    if (phase !== "playing") return;
 
     const config = ROUND_CONFIGS[currentRound];
     const image = gridImages.find((img) => img.id === imageId);
     if (!image || image.selected) return;
 
-    const isTargetAI = config.mission === 'pickAI';
+    const isTargetAI = config.mission === "pickAI";
     const isCorrect = isTargetAI ? image.isAI : !image.isAI;
 
     if (isCorrect) {
       const { timeRemaining, wrongClicks } = get();
-      const roundScore = calculateRoundScore(config, true, timeRemaining, wrongClicks);
+      const roundScore = calculateRoundScore(
+        config,
+        true,
+        timeRemaining,
+        wrongClicks,
+      );
 
       const updatedImages = gridImages.map((img) => ({
         ...img,
@@ -77,7 +88,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         selectedImageId: imageId,
         isCorrect: true,
         score: roundScore,
-        phase: 'feedback',
+        phase: "feedback",
       });
 
       setTimeout(() => {
@@ -85,13 +96,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         set({
           roundScores: [...state.roundScores, roundScore],
           totalScore: state.totalScore + roundScore,
-          phase: 'roundComplete',
+          phase: "roundComplete",
         });
       }, 1500);
     } else {
       const { wrongClicks } = get();
       const updatedImages = gridImages.map((img) =>
-        img.id === imageId ? { ...img, selected: true } : img
+        img.id === imageId ? { ...img, selected: true } : img,
       );
 
       set({
@@ -104,7 +115,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       setTimeout(() => {
         const state = get();
         const resetImages = state.gridImages.map((img) =>
-          img.id === imageId ? { ...img, selected: false } : img
+          img.id === imageId ? { ...img, selected: false } : img,
         );
         set({
           gridImages: resetImages,
@@ -123,7 +134,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       gridImages: updatedImages,
       isCorrect: false,
       score: 0,
-      phase: 'feedback',
+      phase: "feedback",
     });
 
     setTimeout(() => {
@@ -131,7 +142,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set({
         roundScores: [...state.roundScores, 0],
         totalScore: state.totalScore,
-        phase: 'roundComplete',
+        phase: "roundComplete",
       });
     }, 1500);
   },
@@ -142,5 +153,5 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setTimeRemaining: (time) => set({ timeRemaining: time }),
 
-  reset: () => set(initialState),
+  reset: () => set({ ...initialState, aiAssignment: createAIAssignment() }),
 }));
