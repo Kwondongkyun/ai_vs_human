@@ -1,24 +1,18 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ScanSearch, Timer, Layers, Trophy, Play } from 'lucide-react';
 import { useGameStore } from '@/stores/gameStore';
 import Button from '@/components/ui/Button';
-import Modal from '@/components/ui/Modal';
 import TopRanking from '@/components/game/TopRanking';
 
 export default function LandingPage() {
   const router = useRouter();
-  const { setNickname, reset } = useGameStore();
-  const [showModal, setShowModal] = useState(false);
-  const [name, setName] = useState('');
+  const { reset } = useGameStore();
 
   const handleStart = () => {
-    if (name.trim().length < 2) return;
     reset();
-    setNickname(name.trim());
     router.push('/game');
   };
 
@@ -106,35 +100,13 @@ export default function LandingPage() {
           <Button
             size="lg"
             className="w-full flex items-center justify-center gap-2"
-            onClick={() => setShowModal(true)}
+            onClick={handleStart}
           >
             <Play className="w-4 h-4 fill-current" />
             게임 시작
           </Button>
         </motion.div>
       </motion.div>
-
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <h2 className="text-xl font-bold mb-4 text-center">닉네임을 입력하세요</h2>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleStart()}
-          placeholder="2~10자 닉네임"
-          maxLength={10}
-          className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 outline-none focus:border-lg-red transition-colors mb-4"
-          autoFocus
-        />
-        <Button
-          size="lg"
-          className="w-full"
-          onClick={handleStart}
-          disabled={name.trim().length < 2}
-        >
-          시작하기
-        </Button>
-      </Modal>
     </div>
   );
 }

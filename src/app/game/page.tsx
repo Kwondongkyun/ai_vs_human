@@ -15,7 +15,7 @@ export default function GamePage() {
   const router = useRouter();
   const store = useGameStore();
   const {
-    nickname, phase, currentRound, score, totalScore, gridImages,
+    phase, currentRound, score, totalScore, gridImages,
     isCorrect, wrongClicks, roundScores,
     setPhase, startRound, selectImage, setTimeRemaining, handleTimeout,
   } = store;
@@ -23,14 +23,10 @@ export default function GamePage() {
   const config = ROUND_CONFIGS[currentRound] ?? ROUND_CONFIGS[0];
 
   useEffect(() => {
-    if (!nickname) {
-      router.replace('/');
-      return;
-    }
     if (phase === 'landing' || phase === 'nickname') {
       startRound(0);
     }
-  }, [nickname, phase, router, startRound]);
+  }, [phase, startRound]);
 
   const handleTimerComplete = useCallback(() => {
     handleTimeout();
@@ -65,8 +61,6 @@ export default function GamePage() {
       startRound(nextRound);
     }
   }, [currentRound, router, startRound]);
-
-  if (!nickname) return null;
 
   const lastRoundScore = roundScores.length > 0 ? roundScores[roundScores.length - 1] : 0;
 

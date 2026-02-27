@@ -7,28 +7,27 @@ import { Trophy, CheckCircle2, XCircle, Home, Upload } from 'lucide-react';
 import { useGameStore } from '@/stores/gameStore';
 import { ROUNDS_COUNT } from '@/lib/constants';
 import Button from '@/components/ui/Button';
+import Modal from '@/components/ui/Modal';
 
 export default function ResultPage() {
   const router = useRouter();
-  const { nickname, totalScore, roundScores, currentRound, setPhase } = useGameStore();
+  const { totalScore, roundScores, currentRound, setPhase } = useGameStore();
+  const [showModal, setShowModal] = useState(false);
+  const [nickname, setNickname] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    if (!nickname) {
-      router.replace('/');
-      return;
-    }
     setPhase('result');
-  }, [nickname, router, setPhase]);
+  }, [setPhase]);
 
   const handleSubmit = async () => {
-    if (submitted) return;
+    if (nickname.trim().length < 2 || submitted) return;
     try {
       await fetch('/api/leaderboard', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          nickname,
+          nickname: nickname.trim(),
           score: totalScore,
           round: Math.min(currentRound + 1, ROUNDS_COUNT),
         }),
@@ -39,8 +38,6 @@ export default function ResultPage() {
     }
     router.push('/leaderboard');
   };
-
-  if (!nickname) return null;
 
   return (
     <div className="min-h-screen px-4 py-8 flex items-center justify-center relative overflow-hidden">
@@ -73,7 +70,7 @@ export default function ResultPage() {
           transition={{ delay: 0.2 }}
         >
           <h1 className="text-3xl font-extrabold mb-1">게임 완료!</h1>
-          <p className="text-white/50 text-sm mb-8">{nickname}님의 최종 결과</p>
+          <p className="text-white/50 text-sm mb-8">최종 결과</p>
         </motion.div>
 
         {/* 총점 카드 */}
@@ -127,7 +124,7 @@ export default function ResultPage() {
           <Button
             size="lg"
             className="w-full flex items-center justify-center gap-2"
-            onClick={handleSubmit}
+            onClick={() => setShowModal(true)}
             disabled={submitted}
           >
             <Upload className="w-4 h-4" strokeWidth={2} />
@@ -144,6 +141,30 @@ export default function ResultPage() {
           </Button>
         </motion.div>
       </motion.div>
+
+      {/* 닉네임 입력 모달 */}
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <h2 className="text-xl font-bold mb-1 text-center">닉네임을 입력하세요</h2>
+        <p className="text-sm text-white/40 text-center mb-5">리더보드에 등록될 이름입니다</p>
+        <input
+          type="text"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+          placeholder="2~10자 닉네임"
+          maxLength={10}
+          className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 outline-none focus:border-lg-red transition-colors mb-4"
+          autoFocus
+        />
+        <Button
+          size="lg"
+          className="w-full"
+          onClick={handleSubmit}
+          disabled={nickname.trim().length < 2}
+        >
+          등록하기
+        </Button>
+      </Modal>
     </div>
   );
 }
