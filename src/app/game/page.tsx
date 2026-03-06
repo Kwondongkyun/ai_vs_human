@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { XCircle } from 'lucide-react';
 import { useGameStore } from '@/stores/gameStore';
 import { ROUNDS_COUNT, ROUND_CONFIGS } from '@/lib/constants';
 import { useTimer } from '@/hooks/useTimer';
@@ -21,6 +22,15 @@ export default function GamePage() {
   } = store;
 
   const config = ROUND_CONFIGS[currentRound] ?? ROUND_CONFIGS[0];
+  const [showWrongToast, setShowWrongToast] = useState(false);
+
+  useEffect(() => {
+    if (wrongClicks > 0) {
+      setShowWrongToast(true);
+      const timer = setTimeout(() => setShowWrongToast(false), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [wrongClicks]);
 
   useEffect(() => {
     if (phase === 'landing' || phase === 'nickname') {
@@ -77,7 +87,21 @@ export default function GamePage() {
         wrongClicks={wrongClicks}
       />
 
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center relative">
+        <AnimatePresence>
+          {showWrongToast && (
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-0 z-30 bg-danger/90 text-white text-sm font-bold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg"
+            >
+              <XCircle className="w-4 h-4" strokeWidth={2} />
+              오답! -50점
+            </motion.div>
+          )}
+        </AnimatePresence>
         <ImageGrid
           images={gridImages}
           config={config}

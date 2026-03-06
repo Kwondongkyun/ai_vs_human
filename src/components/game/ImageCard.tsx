@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { XCircle } from 'lucide-react';
 import { GridImage } from '@/types/game';
 
 interface ImageCardProps {
@@ -16,14 +17,24 @@ export default function ImageCard({ image, onClick, disabled, gridCols, priority
   const sizes = `(max-width: 640px) ${Math.floor(100 / gridCols)}vw, ${Math.floor(640 / gridCols)}px`;
   const getBorderClass = () => {
     if (!image.selected && !image.revealed) return 'border-white/10 hover:border-white/30';
-    if (image.selected && image.isAI) return 'border-danger ring-2 ring-danger/50';
-    if (image.selected && !image.isAI) return 'border-success ring-2 ring-success/50';
+    if (image.selected && !image.revealed) return 'border-danger/60 ring-1 ring-danger/30';
     if (image.revealed && image.isAI) return 'border-warning ring-2 ring-warning/50';
     if (image.revealed && !image.isAI) return 'border-white/20';
     return 'border-white/10';
   };
 
   const getOverlay = () => {
+    if (image.selected && !image.revealed) {
+      return (
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
+          <span className="bg-danger/90 text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1">
+            <XCircle className="w-3 h-3" strokeWidth={2} />
+            오답
+          </span>
+        </div>
+      );
+    }
+
     if (!image.revealed) return null;
 
     if (image.isAI) {

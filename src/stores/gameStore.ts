@@ -30,6 +30,7 @@ const initialState: GameState = {
   isCorrect: null,
   timeRemaining: 0,
   wrongClicks: 0,
+  roundWrongClicks: [],
   aiAssignment: [],
 };
 
@@ -95,6 +96,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const state = get();
         set({
           roundScores: [...state.roundScores, roundScore],
+          roundWrongClicks: [...state.roundWrongClicks, state.wrongClicks],
           totalScore: state.totalScore + roundScore,
           phase: "roundComplete",
         });
@@ -113,12 +115,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
 
       setTimeout(() => {
-        const state = get();
-        const resetImages = state.gridImages.map((img) =>
-          img.id === imageId ? { ...img, selected: false } : img,
-        );
         set({
-          gridImages: resetImages,
           selectedImageId: null,
           isCorrect: null,
         });
@@ -141,6 +138,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const state = get();
       set({
         roundScores: [...state.roundScores, 0],
+        roundWrongClicks: [...state.roundWrongClicks, state.wrongClicks],
         totalScore: state.totalScore,
         phase: "roundComplete",
       });

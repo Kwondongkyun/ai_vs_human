@@ -11,7 +11,7 @@ import Modal from '@/components/ui/Modal';
 
 export default function ResultPage() {
   const router = useRouter();
-  const { totalScore, roundScores, currentRound, setPhase } = useGameStore();
+  const { totalScore, roundScores, roundWrongClicks, currentRound, setPhase } = useGameStore();
   const [showModal, setShowModal] = useState(false);
   const [nickname, setNickname] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -106,8 +106,15 @@ export default function ResultPage() {
                   }
                   Round {i + 1}
                 </span>
-                <span className={`font-bold tabular-nums ${s > 0 ? 'text-success' : 'text-white/30'}`}>
-                  {s > 0 ? `+${s.toLocaleString()}` : '0'}점
+                <span className="flex items-center gap-2">
+                  {(roundWrongClicks[i] ?? 0) > 0 && (
+                    <span className="text-xs text-danger/70">
+                      -{(roundWrongClicks[i] ?? 0) * 50}
+                    </span>
+                  )}
+                  <span className={`font-bold tabular-nums ${s > 0 ? 'text-success' : 'text-white/30'}`}>
+                    {s > 0 ? `+${s.toLocaleString()}` : '0'}점
+                  </span>
                 </span>
               </motion.div>
             ))}

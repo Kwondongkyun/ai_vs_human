@@ -46,6 +46,7 @@ export interface GameState {
   isCorrect: boolean | null;
   timeRemaining: number;
   wrongClicks: number;
+  roundWrongClicks: number[];
   aiAssignment: ImageItem[]; // 라운드별 AI 이미지 배정 (게임 시작 시 셔플)
 }
 
