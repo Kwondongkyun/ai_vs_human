@@ -15,10 +15,10 @@ export interface RoundImagePool {
 //   real-47~88    → 구 round4/real-1~42
 
 function r(n: number): ImageItem {
-  return { id: `real-${n}`, src: `/images/real/real-${n}.jpg`, isAI: false, category: "" };
+  return { id: `real-${n}`, src: `/images/real/real-${n}.webp`, isAI: false, category: "" };
 }
 function a(n: number): ImageItem {
-  return { id: `ai-${n}`, src: `/images/ai/ai-${n}.png`, isAI: true, category: "" };
+  return { id: `ai-${n}`, src: `/images/ai/ai-${n}.webp`, isAI: true, category: "" };
 }
 
 const ALL_AI: ImageItem[] = Array.from({ length: 30 }, (_, i) => a(i + 1));

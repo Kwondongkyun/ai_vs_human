@@ -4,7 +4,9 @@ import { getLeaderboard, addLeaderboardEntry } from '@/lib/leaderboard';
 export async function GET() {
   try {
     const entries = await getLeaderboard();
-    return NextResponse.json(entries);
+    return NextResponse.json(entries, {
+      headers: { 'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30' },
+    });
   } catch (error) {
     console.error('Leaderboard GET error:', error);
     return NextResponse.json({ error: 'Failed to fetch leaderboard' }, { status: 500 });
