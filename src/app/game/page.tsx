@@ -84,6 +84,7 @@ export default function GamePage() {
         timeRemaining={remaining}
         timeLimit={config.timeLimit}
         missionText={config.missionText}
+        mission={config.mission}
         wrongClicks={wrongClicks}
       />
 

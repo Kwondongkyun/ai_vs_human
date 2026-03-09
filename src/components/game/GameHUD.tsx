@@ -12,6 +12,7 @@ interface GameHUDProps {
   timeRemaining: number;
   timeLimit: number;
   missionText: string;
+  mission: string;
   wrongClicks: number;
 }
 
@@ -23,6 +24,7 @@ export default function GameHUD({
   timeRemaining,
   timeLimit,
   missionText,
+  mission,
   wrongClicks,
 }: GameHUDProps) {
   const timePercent = (timeRemaining / timeLimit) * 100;
@@ -56,8 +58,16 @@ export default function GameHUD({
         </motion.div>
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-center">
-        <span className="text-sm font-semibold text-white/90">{missionText}</span>
+      <div className={`rounded-lg px-4 py-3 text-center border ${
+        mission === 'pickAI'
+          ? 'bg-danger/10 border-danger/30'
+          : 'bg-success/10 border-success/30'
+      }`}>
+        <span className={`text-base font-bold ${
+          mission === 'pickAI' ? 'text-danger' : 'text-success'
+        }`}>
+          {missionText}
+        </span>
       </div>
 
       <div className="flex items-center gap-2">

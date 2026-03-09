@@ -41,9 +41,18 @@ export default function RoundBriefing({ config, onStart }: RoundBriefingProps) {
           ROUND {config.round}
         </div>
 
-        <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 mb-5">
-          <p className="text-base font-semibold text-white">{config.missionText}</p>
+        <div className={`rounded-xl px-4 py-3 mb-2 border ${
+          config.mission === 'pickAI'
+            ? 'bg-danger/10 border-danger/30'
+            : 'bg-success/10 border-success/30'
+        }`}>
+          <p className={`text-base font-bold ${
+            config.mission === 'pickAI' ? 'text-danger' : 'text-success'
+          }`}>{config.missionText}</p>
         </div>
+        <p className="text-xs text-white/40 mb-4">
+          총 {config.totalImages}장 중 AI 이미지 {config.aiCount}장, 실제 이미지 {config.realCount}장
+        </p>
 
         <div className="grid grid-cols-2 gap-2 text-sm mb-6">
           <div className="bg-white/3 border border-white/8 rounded-xl p-3 flex flex-col items-center gap-1.5">

@@ -14,7 +14,7 @@ export const ROUND_CONFIGS: RoundConfig[] = [
     correctScore: 100,
     wrongPenalty: 50,
     mission: 'pickReal',
-    missionText: '실제 이미지를 고르세요!',
+    missionText: '실제 이미지 1장을 고르세요!',
   },
   {
     round: 2,
@@ -27,7 +27,7 @@ export const ROUND_CONFIGS: RoundConfig[] = [
     correctScore: 200,
     wrongPenalty: 50,
     mission: 'pickAI',
-    missionText: 'AI가 만든 이미지를 찾으세요!',
+    missionText: 'AI가 만든 이미지 1장을 찾으세요!',
   },
   {
     round: 3,
@@ -40,7 +40,7 @@ export const ROUND_CONFIGS: RoundConfig[] = [
     correctScore: 400,
     wrongPenalty: 50,
     mission: 'pickAI',
-    missionText: 'AI가 만든 이미지를 찾으세요!',
+    missionText: 'AI가 만든 이미지 1장을 찾으세요!',
   },
   {
     round: 4,
@@ -53,7 +53,7 @@ export const ROUND_CONFIGS: RoundConfig[] = [
     correctScore: 800,
     wrongPenalty: 50,
     mission: 'pickAI',
-    missionText: 'AI가 만든 이미지를 찾으세요!',
+    missionText: 'AI가 만든 이미지 1장을 찾으세요!',
   },
 ];
 

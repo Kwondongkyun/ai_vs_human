@@ -115,16 +115,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
 
       setTimeout(() => {
-        set({
-          selectedImageId: null,
-          isCorrect: null,
-        });
+        const { phase } = get();
+        if (phase === 'playing') {
+          set({ selectedImageId: null, isCorrect: null });
+        }
       }, 800);
     }
   },
 
   handleTimeout: () => {
-    const { gridImages } = get();
+    const { phase, gridImages } = get();
+    if (phase !== 'playing') return;
     const updatedImages = gridImages.map((img) => ({ ...img, revealed: true }));
 
     set({
