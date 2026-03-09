@@ -29,10 +29,10 @@ export default function TopRanking() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.6, duration: 0.4 }}
-      className="absolute top-4 right-4 z-10 w-52 bg-white/5 border border-white/10 backdrop-blur-sm rounded-xl p-3"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.65, duration: 0.4 }}
+      className="w-full mt-6 md:fixed md:top-4 md:right-4 md:w-52 md:mt-0 bg-white/5 border border-white/10 backdrop-blur-sm rounded-xl p-4 md:p-3"
     >
       <div className="flex items-center gap-1.5 mb-3">
         <Trophy className="w-3.5 h-3.5 text-lg-red" strokeWidth={1.5} />

@@ -17,11 +17,9 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10 relative overflow-x-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-yonam-dark via-yonam-blue/15 to-lg-red/25" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-yonam-blue/10 via-transparent to-transparent" />
-
-      <TopRanking />
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -106,6 +104,8 @@ export default function LandingPage() {
             게임 시작
           </Button>
         </motion.div>
+
+        <TopRanking />
       </motion.div>
     </div>
   );
