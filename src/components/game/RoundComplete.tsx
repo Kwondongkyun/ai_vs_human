@@ -49,7 +49,7 @@ export default function RoundComplete({
         </div>
 
         <h2 className="text-xl font-bold mb-1">Round {round}</h2>
-        <p className={`text-sm font-semibold mb-5 ${isCorrect ? 'text-success' : 'text-danger'}`}>
+        <p className={`text-sm font-semibold mb-5 break-keep ${isCorrect ? 'text-success' : 'text-danger'}`}>
           {isCorrect ? '정답 맞췄습니다!' : '시간 초과...'}
         </p>
 

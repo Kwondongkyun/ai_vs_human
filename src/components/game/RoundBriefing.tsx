@@ -46,11 +46,11 @@ export default function RoundBriefing({ config, onStart }: RoundBriefingProps) {
             ? 'bg-danger/10 border-danger/30'
             : 'bg-success/10 border-success/30'
         }`}>
-          <p className={`text-base font-bold ${
+          <p className={`text-base font-bold break-keep ${
             config.mission === 'pickAI' ? 'text-danger' : 'text-success'
           }`}>{config.missionText}</p>
         </div>
-        <p className="text-xs text-white/40 mb-4">
+        <p className="text-xs text-white/40 mb-4 break-keep">
           총 {config.totalImages}장 중 AI 이미지 {config.aiCount}장, 실제 이미지 {config.realCount}장
         </p>
 

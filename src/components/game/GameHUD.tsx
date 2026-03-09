@@ -63,7 +63,7 @@ export default function GameHUD({
           ? 'bg-danger/10 border-danger/30'
           : 'bg-success/10 border-success/30'
       }`}>
-        <span className={`text-base font-bold ${
+        <span className={`text-base font-bold break-keep ${
           mission === 'pickAI' ? 'text-danger' : 'text-success'
         }`}>
           {missionText}
