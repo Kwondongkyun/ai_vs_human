@@ -106,6 +106,10 @@ export default function LandingPage() {
         </motion.div>
 
         <TopRanking />
+
+        <p className="text-[10px] text-white/20 mt-6">
+          본 게임은 생성형 AI(Claude Opus 4.6)를 활용하여 제작되었습니다
+        </p>
       </motion.div>
     </div>
   );
