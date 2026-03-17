@@ -50,8 +50,11 @@ export default function RoundBriefing({ config, onStart }: RoundBriefingProps) {
             config.mission === 'pickAI' ? 'text-danger' : 'text-success'
           }`}>{config.missionText}</p>
         </div>
-        <p className="text-xs text-white/40 mb-4 break-keep">
+        <p className="text-xs text-white/40 mb-1 break-keep">
           총 {config.totalImages}장 중 AI 이미지 {config.aiCount}장, 실제 이미지 {config.realCount}장
+        </p>
+        <p className="text-[10px] text-white/25 mb-4">
+          AI 이미지: Gemini Nano Banana
         </p>
 
         <div className="grid grid-cols-2 gap-2 text-sm mb-6">
