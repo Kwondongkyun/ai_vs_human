@@ -146,9 +146,6 @@ export default function ResultPage() {
             <Home className="w-4 h-4" strokeWidth={1.5} />
             홈으로
           </Button>
-          <p className="text-[10px] text-white/20 mt-4 text-center">
-            생성형 AI(Gemini Nano Banana)를 사용한 이미지입니다
-          </p>
         </motion.div>
       </motion.div>
 

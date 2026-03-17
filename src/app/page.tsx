@@ -107,9 +107,6 @@ export default function LandingPage() {
 
         <TopRanking />
 
-        <p className="text-[10px] text-white/20 mt-6">
-          생성형 AI(Gemini Nano Banana)를 사용한 이미지입니다
-        </p>
       </motion.div>
     </div>
   );

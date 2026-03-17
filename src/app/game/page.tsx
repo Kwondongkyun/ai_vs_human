@@ -88,6 +88,10 @@ export default function GamePage() {
         wrongClicks={wrongClicks}
       />
 
+      <p className="text-[11px] text-yonam-blue text-center">
+        생성형 AI(Nano Banana 2 — Gemini 3.1 Flash Image)를 사용한 이미지입니다
+      </p>
+
       <div className="flex-1 flex items-center justify-center relative">
         <AnimatePresence>
           {showWrongToast && (

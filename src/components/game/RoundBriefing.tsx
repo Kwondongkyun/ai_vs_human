@@ -53,8 +53,8 @@ export default function RoundBriefing({ config, onStart }: RoundBriefingProps) {
         <p className="text-xs text-white/40 mb-1 break-keep">
           총 {config.totalImages}장 중 AI 이미지 {config.aiCount}장, 실제 이미지 {config.realCount}장
         </p>
-        <p className="text-[10px] text-white/25 mb-4">
-          AI 이미지: Gemini Nano Banana
+        <p className="text-[10px] text-yonam-blue mb-4">
+          AI 이미지: Nano Banana 2 — Gemini 3.1 Flash Image
         </p>
 
         <div className="grid grid-cols-2 gap-2 text-sm mb-6">

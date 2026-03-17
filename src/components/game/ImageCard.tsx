@@ -39,11 +39,8 @@ export default function ImageCard({ image, onClick, disabled, gridCols, priority
 
     if (image.isAI) {
       return (
-        <div className="absolute inset-0 bg-danger/20 flex flex-col items-center justify-center rounded-lg gap-1">
+        <div className="absolute inset-0 bg-danger/20 flex items-center justify-center rounded-lg">
           <span className="bg-danger text-white text-xs font-bold px-2 py-1 rounded">AI</span>
-          <span className="text-[8px] text-white/70 bg-black/40 px-1.5 py-0.5 rounded">
-            Gemini Nano Banana
-          </span>
         </div>
       );
     }
